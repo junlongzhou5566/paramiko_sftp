@@ -1,2 +1,2 @@
 # paramiko_sftp
-用paramiko模块实现从远程服务器下载日志
+python3 用 paramiko模块 实现批量从远程服务器下载日志
