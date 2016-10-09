@@ -1,0 +1,22 @@
+import paramiko
+import threading
+
+
+class MyThread(threading.Thread):
+
+    def __init__(self, n):
+        super(MyThread, self).__init__()
+        self.n = n
+
+    def run(self):
+        private_key = paramiko.RSAKey.from_private_key_file("/root/.ssh/id_rsa")
+        transport = paramiko.Transport(("10.102.%s"%self.n, 22))
+        transport.connect(username="sa", pkey=private_key)
+        sftp = paramiko.SFTPClient.from_transport(transport)
+        sftp.get("/tmp/log/test.log", "/var/log/test/%s/test.log"%self.n)
+
+if __name__ == '__main__':
+    with open("/home/shell/test_ip.txt") as f:
+        for line in f:
+            t = MyThread(line.strip())
+            t.start()
